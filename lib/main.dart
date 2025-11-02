@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pokeapi/pages/home_screen.dart';
-import 'package:pokeapi/services/api_service.dart';
 
 void main() async {
   runApp(const MyApp());
