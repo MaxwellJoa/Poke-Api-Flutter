@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokeapi/pages/main_page.dart';
 import 'package:pokeapi/widgets/const.dart';
+
+import '../blocs/main_page_blocs/mainpage_block.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -267,19 +270,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void _navigateToMainPage(BuildContext context) {
-    // Animación al presionar el botón
     _controller.reverse().then((_) {
+
+      final bloc = context.read<MainPageBloc>(); // ← toma el bloc existente
+
       Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => const MainPage(),
+          pageBuilder: (_, animation, secondaryAnimation) =>
+              BlocProvider.value(
+                value: bloc,
+                child: const MainPage(),
+              ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
             var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
             var offsetAnimation = animation.drive(tween);
-            
+
             return SlideTransition(
               position: offsetAnimation,
               child: child,
@@ -288,6 +297,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           transitionDuration: const Duration(milliseconds: 800),
         ),
       );
+
     });
   }
+
 }

@@ -26,6 +26,10 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
       }
     });
 
+    on<ClearSearch>((event, emit) async {
+      add(FetchPokemons());
+    });
+
 
     on<FetchMorePokemons>((event, emit) async {
       if (isFetching || state is! MainPageLoaded) return;
@@ -45,6 +49,19 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         print('Error cargando más Pokémon: $e');
       } finally {
         isFetching = false;
+      }
+    });
+
+
+    on<SearchPokemonByName>((event, emit) async {
+      emit(MainPageLoading());
+      try {
+        final data = await repository.service.getPokemonByName(event.name);
+        final pokemon = PokemonModel.fromJson(data);
+
+        emit(MainPageLoaded([pokemon]));
+      } catch (e) {
+        print('Error cargando más Pokémon: $e');
       }
     });
   }

@@ -13,4 +13,5 @@ class MainPageLoaded extends MainPageState {
   MainPageLoaded(this.pokemons);
 }
 
-class MainPageError extends MainPageState {}
+class MainPageError extends MainPageState {
+}

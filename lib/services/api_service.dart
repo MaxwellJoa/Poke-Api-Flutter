@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class PokemonService {
   final String baseUrl = 'https://pokeapi.co/api/v2';
   
-  // Cache para evitar llamadas repetidas
+
   final Map<String, dynamic> _cache = {};
 
   Future<Map<String, dynamic>> getPokemonList({int limit = 20, int offset = 0}) async {
